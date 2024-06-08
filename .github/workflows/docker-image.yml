@@ -21,6 +21,14 @@ jobs:
       - name: Use new builder
         run: docker buildx use mybuilder
 
+      - name: Set up Docker Buildx
+        run: docker buildx create --use --name mybuilder linux/amd64
+        # Assumes you've already added the context 'node-amd64'
+
+      - name: Append node for ARM64
+        run: docker buildx create --append --name mybuilder linux/arm64
+        # Assumes you've already added the context 'node-arm64'
+
       - name: Inspect 
         run: docker buildx inspect --bootstrap
       
@@ -35,13 +43,6 @@ jobs:
       # - name: Install emulators
       #   run: docker run --privileged --rm  ${{ secrets.DOCKER_HUB_USERNAME }}/mypythonapp --install all
 
-      # - name: Set up Docker Buildx
-      #   run: docker buildx create --use --name mypythonapp node-amd64
-      #   # Assumes you've already added the context 'node-amd64'
-
-      # - name: Append node for ARM64
-      #   run: docker buildx create --append --name mypythonapp node-arm64
-      #   # Assumes you've already added the context 'node-arm64'
 
       # - name: Build multi-platform image
       #   run: docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKER_HUB_USERNAME }}/mypythonapp:latest .
