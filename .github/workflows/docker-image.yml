@@ -27,7 +27,7 @@ jobs:
 
       # - name: Append node for ARM64
         run: docker buildx create --append --name mybuilder node-arm64
-        Assumes you've already added the context 'node-arm64'
+        # Assumes you've already added the context 'node-arm64'
 
       - name: Inspect 
         run: docker buildx inspect --bootstrap
