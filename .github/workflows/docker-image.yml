@@ -15,20 +15,36 @@ jobs:
       - name: Login to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Install emulators
-        run: docker run --privileged --rm  ${{ secrets.DOCKER_HUB_USERNAME }}/mypythonapp --install all
+      - name: Create new builder
+        run: docker buildx create --name mybuilder
 
-      - name: Set up Docker Buildx
-        run: docker buildx create --use --name mypythonapp node-amd64
-        # Assumes you've already added the context 'node-amd64'
+      - name: Use new builder
+        run: docker buildx use mybuilder
 
-      - name: Append node for ARM64
-        run: docker buildx create --append --name mypythonapp node-arm64
-        # Assumes you've already added the context 'node-arm64'
+      - name: Inspect 
+        run: docker buildx inspect --bootstrap
+      
+      - name: Build Image
+        run: docker buildx build \ 
+          --platform linux/amd64,linux/arm64, linux/arm/v7 \
+          -t ${{ secrets.DOCKER_HUB_USERNAME }}/mypythonapp:latest \ 
+          --push
 
-      - name: Build multi-platform image
-        run: docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKER_HUB_USERNAME }}/mypythonapp:latest .
 
-      - name: Push image to Docker Hub
-        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/mypythonapp:latest
+      # - name: Install emulators
+      #   run: docker run --privileged --rm  ${{ secrets.DOCKER_HUB_USERNAME }}/mypythonapp --install all
+
+      # - name: Set up Docker Buildx
+      #   run: docker buildx create --use --name mypythonapp node-amd64
+      #   # Assumes you've already added the context 'node-amd64'
+
+      # - name: Append node for ARM64
+      #   run: docker buildx create --append --name mypythonapp node-arm64
+      #   # Assumes you've already added the context 'node-arm64'
+
+      # - name: Build multi-platform image
+      #   run: docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKER_HUB_USERNAME }}/mypythonapp:latest .
+
+      # - name: Push image to Docker Hub
+      #   run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/mypythonapp:latest
         
