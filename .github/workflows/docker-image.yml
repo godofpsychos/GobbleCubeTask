@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Install emulators
         run: docker run --privileged --rm mypythonapp --install all
@@ -27,7 +29,5 @@ jobs:
       - name: Build multi-platform image
         run: docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKER_HUB_USERNAME }}/mypythonapp:latest .
         # Replace 'myapp' with your desired image name and tag
-      - name: Login to Docker Hub
-        run: docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: Push image to Docker Hub
         run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/mypythonapp:latest
