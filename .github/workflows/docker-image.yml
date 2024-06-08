@@ -22,8 +22,21 @@ jobs:
         with:
           username: "${{ secrets.DOCKER_HUB_USERNAME }}"
           password: "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}"
+    
+      - name: Inspect 
+        run: docker buildx inspect --bootstrap
+      - name: Status
+        run: docker buildx ls
       
+      - name: "Build and push image tags"
+        uses: "docker/build-push-action@v5"
+        with:
+          context: "."
+          platforms: "linux/amd64,linux/arm64,linux/arm/v7"
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/mypythonapp:latest        
       
+        
       
       # - name: Install emulators
       #   run: docker run --privileged --rm  ${{ secrets.DOCKER_HUB_USERNAME }}/mypythonapp --install all
@@ -41,13 +54,7 @@ jobs:
       # - name: Append node for ARM64
       #   run: docker buildx create --append --name mybuilder node-arm64
         # Assumes you've already added the context 'node-arm64'
-
-      - name: Inspect 
-        run: docker buildx inspect --bootstrap
-      - name: Status
-        run: docker buildx ls
-      
-      
+        
       # - name: Build Image
       #   run: docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKER_HUB_USERNAME }}/mypythonapp:latest --push .
 
@@ -61,10 +68,3 @@ jobs:
       #   run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/mypythonapp:latest
         
       # Push images for X platforms to the Docker Hub (more on this in a bit).
-      - name: "Build and push image tags"
-        uses: "docker/build-push-action@v5"
-        with:
-          context: "."
-          platforms: "linux/amd64,linux/arm64,linux/arm/v7"
-          push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/mypythonapp:latest        
