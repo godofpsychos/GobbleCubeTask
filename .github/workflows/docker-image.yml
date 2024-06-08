@@ -14,13 +14,13 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up Docker Buildx
-        run: docker buildx create --use --name ${{ secrets.DOCKER_HUB_USERNAME }}/mypythonapp:latest node-amd64
+        run: docker buildx create --use --name mypythonapp:latest node-amd64
         # Assumes you've already added the context 'node-amd64'
 
       - name: Append node for ARM64
-        run: docker buildx create --append --name ${{ secrets.DOCKER_HUB_USERNAME }}/mypythonapp:latest node-arm64
+        run: docker buildx create --append --name mypythonapp:latest node-arm64
         # Assumes you've already added the context 'node-arm64'
 
       - name: Build multi-platform image
-        run: docker buildx build --platform linux/amd64,linux/arm64 -t myapp .
+        run: docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKER_HUB_USERNAME }}/mypythonapp:latest .
         # Replace 'myapp' with your desired image name and tag
