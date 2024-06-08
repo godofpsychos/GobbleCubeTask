@@ -15,19 +15,19 @@ jobs:
       - name: Login to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      # - name: Create new builder
-      #   run: docker buildx create --use --name mybuilder node-amd64
+      - name: Create new builder
+        run: docker buildx create --use --name mybuilder node-amd64
 
-      # - name: Use new builder
-      #   run: docker buildx use mybuilder
+      - name: Use new builder
+        run: docker buildx use mybuilder
 
       # - name: Set up Docker Buildx
       #   run: docker buildx create --use --name mybuilder node-arm64
         # Assumes you've already added the context 'node-amd64'
 
       # - name: Append node for ARM64
-      #   run: docker buildx create --append --name mybuilder node-arm64
-        # Assumes you've already added the context 'node-arm64'
+        run: docker buildx create --append --name mybuilder node-arm64
+        Assumes you've already added the context 'node-arm64'
 
       - name: Inspect 
         run: docker buildx inspect --bootstrap
