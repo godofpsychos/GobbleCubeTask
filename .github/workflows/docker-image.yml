@@ -16,10 +16,10 @@ jobs:
         run: docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Create new builder
-        run: docker buildx create --name mybuilder 
+        run: docker buildx create --use --name mybuilder node-amd64
 
-      - name: Use new builder
-        run: docker buildx use mybuilder
+      # - name: Use new builder
+      #   run: docker buildx use mybuilder
 
       # - name: Set up Docker Buildx
       #   run: docker buildx create --use --name mybuilder node-arm64
