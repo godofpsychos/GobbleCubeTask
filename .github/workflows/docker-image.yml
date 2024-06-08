@@ -29,6 +29,7 @@ jobs:
           --platform linux/amd64,linux/arm64, linux/arm/v7 \
           -t ${{ secrets.DOCKER_HUB_USERNAME }}/mypythonapp:latest \ 
           --push
+          .
 
 
       # - name: Install emulators
