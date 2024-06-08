@@ -18,8 +18,8 @@ jobs:
       - name: Install emulators
         run: docker run --privileged --rm  ${{ secrets.DOCKER_HUB_USERNAME }}/mypythonapp --install all
 
-      - name: Create new builder
-        run: docker buildx create --use --name mybuilder 
+      # - name: Create new builder
+      #   run: docker buildx create --use --name mybuilder 
 
       # - name: Use new builder
       #   run: docker buildx use mybuilder
@@ -28,12 +28,12 @@ jobs:
       #   run: docker buildx create --use --name mybuilder node-arm64
         # Assumes you've already added the context 'node-amd64'
 
-      - name: Append node for ARM64
-        run: docker buildx create --append --name mybuilder node-arm64
+      # - name: Append node for ARM64
+      #   run: docker buildx create --append --name mybuilder node-arm64
         # Assumes you've already added the context 'node-arm64'
 
       - name: Inspect 
-        run: docker buildx inspect --bootstrap
+        run: docker buildx inspect --bootstrap 
       - name: Status
         run: docker buildx ls
       
